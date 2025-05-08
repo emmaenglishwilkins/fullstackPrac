@@ -26,4 +26,17 @@ git push
 to know if we are behind in the tree: git status 
 check .gitignore file to make sure we arnt commiting node modules (what a hassle)
 
+
+Goal: 
+
+Right now this is a todo list but i want to turn it into a wish list website /database 
+
+can input the amount of money i want to spend and then it will give all possible iterations of what to buy 
+
+depending might need to keep up with what is available still and the date it was added to wishlist 
+
+-- could also have an iteration like the 3 ring binder scrapbook style thing that i wanted to make (digitally or irl)
+
+
+
 okeee baiii

@@ -1,40 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function App() {
-  const [tasks, setTasks] = useState([]);
-  const [text, setText] = useState("");
+import ItemCard from "./components/ItemCard";
+import ItemForm from "./components/ItemForm";
+import TaskForm from "./components/TaskForm";
+import TaskTracker from "./components/TaskTracker";
 
+function App() {
+  const [items, setItems] = useState([]);
+
+  // Fetch clothing items
   useEffect(() => {
-    axios.get("/tasks").then(res => setTasks(res.data));
+    axios.get("/clothing")
+      .then(res => setItems(res.data))
+      .catch(err => console.error("Error fetching clothing items:", err));
   }, []);
 
-  const addTask = () => {
-    axios.post("/tasks", { text }).then(res => {
-      setTasks([...tasks, { _id: res.data._id, text }]);
-      setText("");
-    });
-  };
-
-  const deleteTask = id => {
-    axios.delete(`/tasks/${id}`).then(() => {
-      setTasks(tasks.filter(t => t._id !== id));
-    });
+  const addItem = (item) => {
+    axios.post("/clothing", item)
+      .then(res => setItems(prev => [...prev, res.data]))
+      .catch(err => console.error("Error adding item:", err));
   };
 
   return (
-    <div>
-      <h1>Task Tracker</h1>
-      <input value={text} onChange={e => setText(e.target.value)} />
-      <button onClick={addTask}>Add</button>
-      <ul>
-        {tasks.map(task => (
-          <li key={task._id}>
-            {task.text}
-            <button onClick={() => deleteTask(task._id)}>Delete</button>
-          </li>
+    <div className="container mx-auto p-6">
+      <h1 className="text-4xl font-bold text-center my-8">Item Tracker</h1>
+      <ItemForm onAdd={addItem} />
+      <div className="grid grid-cols-3 gap-4 my-6">
+        {items.map((item) => (
+          <ItemCard key={item._id} item={item} />
         ))}
-      </ul>
+      </div>
+
+      <h1 className="text-4xl font-bold text-center my-8">Task Tracker</h1>
+      <TaskForm />
+      <TaskTracker />
     </div>
   );
 }
